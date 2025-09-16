@@ -3,13 +3,15 @@ package com.sapient.newssearch.model;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 
 @Getter
 @Setter
+@ToString
 public class NewsSearchRequest {
 
     @Size(max = 500, message = "Query length cannot be more than 500 chars")
-    @Pattern(regexp = "[a-zA-Z'\\+-]+", message = "Invalid characters found in query string, a-zA-Z'+- are allowed")
+    @Pattern(regexp = "[a-zA-Z'+-]+", message = "Invalid characters found in query string, a-zA-Z'+- are allowed")
     @NotEmpty
     String query;
 
