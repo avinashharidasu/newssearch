@@ -11,6 +11,9 @@ public final class NewsSearchConstants {
     public static final String PAGE_SIZE = "pageSize";
     public static final String API_KEY_NAME = "X-Api-Key";
 
+    public static final String NEWS_RESULT_RETRY = "newsSearchRetryPolicy";
+    public static final String NEWS_RESULT_CACHE = "newssearchcache";
+
     private NewsSearchConstants() {
     }
 
