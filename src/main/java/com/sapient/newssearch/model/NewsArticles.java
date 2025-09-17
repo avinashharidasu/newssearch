@@ -3,10 +3,11 @@ package com.sapient.newssearch.model;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Data;
 
+import java.io.Serializable;
 import java.time.LocalDateTime;
 
 @Data
-public class NewsArticles {
+public class NewsArticles implements Serializable {
     String author;
     String title;
     String description;

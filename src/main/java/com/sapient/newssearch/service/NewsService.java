@@ -4,14 +4,13 @@ import com.sapient.newssearch.client.NewsClient;
 import com.sapient.newssearch.dto.NewsSearchResponseDto;
 import com.sapient.newssearch.mapper.NewsSearchResponseMapper;
 import com.sapient.newssearch.model.NewsSearchRequest;
-import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import static com.sapient.newssearch.constants.NewsSearchConstants.NEWS_RESULT_RETRY;
+import static com.sapient.newssearch.constants.NewsSearchConstants.NEWS_RESULT_CACHE;
 
 @Service
 @Slf4j
@@ -21,10 +20,10 @@ public class NewsService {
     private final NewsClient client;
     private final NewsSearchResponseMapper mapper;
 
-    @Retry(name = NEWS_RESULT_RETRY, fallbackMethod = "defaultNewsResults")
-    @Cacheable(value = "NEWS_RESULT_CACHE", keyGenerator = "newsCacheKeyGenerator")
+    //@Retry(name = NEWS_RESULT_RETRY, fallbackMethod = "defaultNewsResults")
+    @Cacheable(value = NEWS_RESULT_CACHE, keyGenerator = "newsCacheKeyGenerator")
     public Mono<NewsSearchResponseDto> getNewsResults(NewsSearchRequest request) {
-        log.debug("News article search request initiated with {}", request);
+        log.info("News article search request initiated with {}", request);
 
         var response = client.getNewsResults(request);
         return response.map(mapper::newsResponseToDto);

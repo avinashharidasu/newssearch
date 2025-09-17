@@ -2,6 +2,7 @@ package com.sapient.newssearch.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.Profile;
 import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -40,8 +41,9 @@ public class NewsSecurityConfig {
     }
 
     @Bean
+    @Profile("dev")
     public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("user").password("{noop}user").authorities("read").build();
+        UserDetails user = User.withUsername("admin").password("{noop}user").authorities("read").build();
         return new InMemoryUserDetailsManager(user);
     }
 

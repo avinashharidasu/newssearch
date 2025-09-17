@@ -2,14 +2,12 @@ package com.sapient.newssearch.dto;
 
 import com.sapient.newssearch.model.NewsArticles;
 import lombok.Data;
-import lombok.Getter;
-import lombok.Setter;
 
+import java.io.Serializable;
 import java.util.List;
 
-@Getter
-@Setter
-public class NewsSearchResponseDto {
+@Data
+public class NewsSearchResponseDto implements Serializable {
     String status;
     int totalArticles;
     List<NewsArticles> articles;
