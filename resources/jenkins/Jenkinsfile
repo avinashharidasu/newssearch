@@ -19,7 +19,7 @@ pipeline {
 
     stage('Build JAR') {
       steps {
-        ./gradlew clean build --no-daemon
+        wsl bash -c './gradlew clean build --no-daemon'
       }
     }
 
