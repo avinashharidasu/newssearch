@@ -45,9 +45,9 @@ pipeline {
     stage('Deploy to Kubernetes') {
       steps {
         withCredentials([file(credentialsId: env.KUBECONFIG_CREDENTIALS, variable: 'KUBECONFIG')]) {
-          sh """
-            kubectl apply -n ${K8S_NAMESPACE} -f k8s/
-            kubectl rollout status deployment/newssearch-app -n ${K8S_NAMESPACE}
+          bat """
+            minikube kubectl -- apply -n ${K8S_NAMESPACE} -f k8s/
+            minikube kubectl -- rollout status deployment/newssearch-app -n ${K8S_NAMESPACE}
           """
         }
       }
