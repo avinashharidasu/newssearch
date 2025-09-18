@@ -1,0 +1,60 @@
+pipeline {
+  agent any
+
+  environment {
+    DOCKERHUB_CREDENTIALS = 'dockerhub-creds'
+    DOCKERHUB_NAMESPACE   = 'haridasuavinash'
+    IMAGE_NAME            = "${DOCKERHUB_NAMESPACE}/newssearch"
+    KUBECONFIG_CREDENTIALS = 'kubeconfig'
+    K8S_NAMESPACE         = 'dev'
+  }
+
+  stages {
+    stage('Checkout') {
+      steps {
+        checkout scm
+      }
+    }
+
+    stage('Build JAR') {
+      steps {
+        sh './gradlew clean build --no-daemon'
+      }
+    }
+
+    stage('Build Docker Image') {
+      steps {
+        script {
+          docker.build("${IMAGE_NAME}:latest", '-f Dockerfile .')
+        }
+      }
+    }
+
+    stage('Push to Docker Hub') {
+      steps {
+        script {
+          docker.withRegistry('', env.DOCKERHUB_CREDENTIALS) {
+            docker.image("${IMAGE_NAME}:latest").push()
+          }
+        }
+      }
+    }
+
+    stage('Deploy to Kubernetes') {
+      steps {
+        withCredentials([file(credentialsId: env.KUBECONFIG_CREDENTIALS, variable: 'KUBECONFIG')]) {
+          sh """
+            kubectl apply -n ${K8S_NAMESPACE} -f k8s/
+            kubectl rollout status deployment/newssearch-app -n ${K8S_NAMESPACE}
+          """
+        }
+      }
+    }
+  }
+
+  post {
+    always {
+      cleanWs()
+    }
+  }
+}
