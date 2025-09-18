@@ -5,7 +5,7 @@ pipeline {
     DOCKERHUB_CREDENTIALS = 'a8880ebf-c6e5-48bc-b6f0-6a6856e6190d'
     DOCKERHUB_NAMESPACE   = 'haridasuavinash'
     IMAGE_NAME            = "${DOCKERHUB_NAMESPACE}/newssearch"
-    KUBECONFIG_CREDENTIALS = 'kubeconfig'
+    KUBECONFIG_CREDENTIALS = 'k8s-jenkins'
     K8S_NAMESPACE         = 'dev'
     JAVA_HOME             = 'C:\\Users\\avina\\.jdks\\azul-21.0.8\\'
     PATH                  = "${JAVA_HOME}\\bin;${PATH}"
@@ -36,6 +36,7 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://registry.hub.docker.com', env.DOCKERHUB_CREDENTIALS) {
+            docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
             docker.image("${IMAGE_NAME}:latest").push()
           }
         }
