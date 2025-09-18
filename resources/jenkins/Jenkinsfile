@@ -1,10 +1,5 @@
 pipeline {
-    agent {
-        docker {
-            registryUrl 'https://registry.az1'
-            registryCredentialsId 'credentials-id'
-        }
-    }
+    agent any
 
   environment {
     DOCKERHUB_CREDENTIALS = 'a8880ebf-c6e5-48bc-b6f0-6a6856e6190d'
