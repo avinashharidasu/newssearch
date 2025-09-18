@@ -1,5 +1,7 @@
 pipeline {
-  agent any
+    agent {
+        label 'windows-agent'
+    }
 
   environment {
     DOCKERHUB_CREDENTIALS = 'dockerhub-creds'
@@ -19,7 +21,7 @@ pipeline {
 
     stage('Build JAR') {
       steps {
-        wsl bash -c './gradlew clean build --no-daemon'
+        bat './gradlew clean build --no-daemon'
       }
     }
 
