@@ -8,7 +8,8 @@ pipeline {
     KUBECONFIG_CREDENTIALS = 'c3322993-a2b1-4eab-8d99-f7431997b69c'
     K8S_NAMESPACE         = 'dev'
     JAVA_HOME             = 'C:\\Users\\avina\\.jdks\\azul-21.0.8\\'
-    PATH                  = "${JAVA_HOME}\\bin;${PATH}"
+    KUBE_HOME             = 'C:\\Program Files\\minikube'
+    PATH                  = "${KUBE_HOME};${JAVA_HOME}\\bin;${PATH}"
   }
 
   stages {
