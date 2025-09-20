@@ -20,6 +20,10 @@ public class NewsSearchResponseMapperImpl implements NewsSearchResponseMapper {
 
     @Override
     public NewsSearchResponse dtoToNewsResponse(NewsSearchResponseDto destination) {
-        return null;
+        final var response = new NewsSearchResponse();
+        response.setStatus(destination.getStatus());
+        response.setTotalResults(destination.getTotalArticles());
+        response.setArticles(destination.getArticles() == null ? Collections.emptyList() : destination.getArticles());
+        return response;
     }
 }

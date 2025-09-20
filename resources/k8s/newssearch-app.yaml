@@ -3,7 +3,7 @@ kind: Deployment
 metadata:
   name: newssearch-app
 spec:
-  replicas: 2
+  replicas: 1
   selector:
     matchLabels:
       app: newssearch
@@ -36,7 +36,7 @@ kind: Service
 metadata:
   name: newssearch-app
 spec:
-  type: ClusterIP
+  type: NodePort
   selector:
     app: newssearch
   ports:
