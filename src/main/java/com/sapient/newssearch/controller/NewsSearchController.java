@@ -1,20 +1,24 @@
 package com.sapient.newssearch.controller;
 
+import org.springframework.http.MediaType;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
+
 import com.sapient.newssearch.dto.NewsSearchResponseDto;
 import com.sapient.newssearch.model.NewsSearchRequest;
 import com.sapient.newssearch.service.NewsService;
+
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.MediaType;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RequiredArgsConstructor
-@RestController("/v1/api")
+@RestController
+@RequestMapping("/v1/api")
 @Tag(name = "News Search")
 public class NewsSearchController {
 
@@ -30,8 +34,7 @@ public class NewsSearchController {
                     @ApiResponse(description = "Failed to process request", responseCode = "500")
             }
     )
-    Mono<NewsSearchResponseDto> getNewsResults(@Valid NewsSearchRequest request) {
-        service.getNewsResults(request).log();
+    public Mono<NewsSearchResponseDto> getNewsResults(@Valid NewsSearchRequest request) {
         return service.getNewsResults(request);
     }
 
