@@ -33,7 +33,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         script {
-          //docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}", '-f Dockerfile .')
+          docker.build("${IMAGE_NAME}:latest", '-f Dockerfile .')
           bat "docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} --build-arg DEPLOY_ENV=${env.DEPLOY_ENV} ."
         }
       }
@@ -44,6 +44,7 @@ pipeline {
         script {
           docker.withRegistry('https://registry.hub.docker.com', env.DOCKERHUB_CREDENTIALS) {
             docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
+            docker.image("${IMAGE_NAME}:latest").push()
           }
         }
       }
