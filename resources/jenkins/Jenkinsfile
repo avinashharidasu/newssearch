@@ -54,6 +54,7 @@ pipeline {
         withCredentials([file(credentialsId: env.KUBECONFIG_CREDENTIALS, variable: 'KUBECONFIG')]) {
           bat """
             minikube kubectl -- apply -n ${K8S_NAMESPACE} -f resources/k8s/
+            minikube kubectl -- set image deployment/newssearch-app newssearch=${IMAGE_NAME}:${env.BUILD_NUMBER} -n ${K8S_NAMESPACE}
             minikube kubectl -- rollout status deployment/newssearch-app -n ${K8S_NAMESPACE}
           """
         }

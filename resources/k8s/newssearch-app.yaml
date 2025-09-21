@@ -14,7 +14,7 @@ spec:
     spec:
       containers:
         - name: newssearch
-          image: haridasuavinash/newssearch:latest
+          image: haridasuavinash/newssearch
           ports:
             - containerPort: 8080
           env:
