@@ -47,7 +47,6 @@ dependencies {
     testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
-    //developmentOnly 'org.springframework.boot:spring-boot-docker-compose'
 }
 
 dependencyManagement {
@@ -58,7 +57,8 @@ dependencyManagement {
 
 tasks.named('test') {
     useJUnitPlatform()
+
+    jvmArgs += [
+            "-javaagent:${configurations.testRuntimeClasspath.find { it.name.contains('mockito-core') }}"
+    ]
 }
-
-
-
