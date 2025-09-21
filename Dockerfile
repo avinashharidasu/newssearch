@@ -9,4 +9,4 @@ COPY ${JAR_FILE} newssearch.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "newssearch.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=${DEPLOY_ENV}", "-jar", "newssearch.jar"]
