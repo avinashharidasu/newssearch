@@ -1,5 +1,4 @@
 ARG DEPLOY_ENV
-RUN echo "Building for env: ${DEPLOY_ENV}"
 
 FROM azul/zulu-openjdk-alpine:21
 
