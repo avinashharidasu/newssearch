@@ -35,6 +35,7 @@ public class NewsClient {
 
     public Mono<NewsSearchResponse> getNewsResults(NewsSearchRequest request) {
         log.debug("Received request to search news for request {}", request);
+
         return client.get()
                 .uri(getNewsURI(request))
                 .retrieve()

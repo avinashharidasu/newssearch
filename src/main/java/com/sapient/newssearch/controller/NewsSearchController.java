@@ -1,5 +1,6 @@
 package com.sapient.newssearch.controller;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -20,6 +21,7 @@ import reactor.core.publisher.Mono;
 @RestController
 @RequestMapping("/v1/api")
 @Tag(name = "News Search")
+@Slf4j
 public class NewsSearchController {
 
     private final NewsService service;
@@ -35,6 +37,7 @@ public class NewsSearchController {
             }
     )
     public Mono<NewsSearchResponseDto> getNewsResults(@Valid NewsSearchRequest request) {
+        log.debug("Received request to search news for {}", request);
         return service.getNewsResults(request);
     }
 
