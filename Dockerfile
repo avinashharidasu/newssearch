@@ -1,6 +1,6 @@
-ARG DEPLOY_ENV
-
 FROM azul/zulu-openjdk-alpine:21
+
+ARG DEPLOY_ENV
 
 WORKDIR /app
 
