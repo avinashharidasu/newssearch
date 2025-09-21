@@ -3,14 +3,19 @@ pipeline {
 
   environment {
     DOCKERHUB_CREDENTIALS = 'a8880ebf-c6e5-48bc-b6f0-6a6856e6190d'
+    KUBECONFIG_CREDENTIALS = 'c3322993-a2b1-4eab-8d99-f7431997b69c'
     DOCKERHUB_NAMESPACE   = 'haridasuavinash'
     IMAGE_NAME            = "${DOCKERHUB_NAMESPACE}/newssearch"
-    KUBECONFIG_CREDENTIALS = 'c3322993-a2b1-4eab-8d99-f7431997b69c'
     K8S_NAMESPACE         = ${env.DEPLOY_ENV}
     JAVA_HOME             = 'C:\\Users\\avina\\.jdks\\azul-21.0.8\\'
     KUBE_HOME             = 'C:\\Program Files\\minikube'
     PATH                  = "${KUBE_HOME};${JAVA_HOME}\\bin;${PATH}"
   }
+
+ parameters {
+     string(name: 'BUILD_NUMBER', defaultValue: '', description: 'Build number, used to tag image published to dockerhub')
+     string(name: 'DEPLOY_ENV', defaultValue: 'dev', description: 'Deploy environment')
+ }
 
   stages {
     stage('Checkout') {
@@ -28,7 +33,8 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         script {
-          docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}", '-f Dockerfile .')
+          //docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}", '-f Dockerfile .')
+          bat "docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} --build-arg DEPLOY_ENV=${env.DEPLOY_ENV} ."
         }
       }
     }
