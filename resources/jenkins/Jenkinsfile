@@ -28,8 +28,7 @@ pipeline {
     stage('Build Docker Image') {
       steps {
         script {
-          docker.build("${IMAGE_NAME}:latest", '-f Dockerfile .')
-          docker.tag("${IMAGE_NAME}:${env.BUILD_NUMBER}", "${IMAGE_NAME}:latest")
+          docker.build("${IMAGE_NAME}:${env.BUILD_NUMBER}", '-f Dockerfile .')
         }
       }
     }
@@ -38,7 +37,6 @@ pipeline {
       steps {
         script {
           docker.withRegistry('https://registry.hub.docker.com', env.DOCKERHUB_CREDENTIALS) {
-            docker.image("${IMAGE_NAME}:latest").push()
             docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
           }
         }
