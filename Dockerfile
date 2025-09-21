@@ -13,4 +13,4 @@ COPY ${JAR_FILE} newssearch.jar
 EXPOSE 8080
 
 # Define the command to run your Spring Boot application
-ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-Dlogging.level.ROOT=DEBUG", "-jar", "newssearch.jar"]
+ENTRYPOINT ["java", "-Dspring.profiles.active=dev", "-jar", "newssearch.jar"]
