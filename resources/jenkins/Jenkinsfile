@@ -38,6 +38,7 @@ pipeline {
         script {
           docker.withRegistry('https://registry.hub.docker.com', env.DOCKERHUB_CREDENTIALS) {
             docker.image("${IMAGE_NAME}:latest").push()
+            docker.image("${IMAGE_NAME}:${env.BUILD_NUMBER}").push()
           }
         }
       }
