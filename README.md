@@ -91,7 +91,7 @@ Build image:
 docker build -t newssearch:local .
 ```
 
-Run with Docker Compose (app + Redis):
+Run with Docker Compose (API + Cache):
 ```bash
 docker compose up -d --build
 ```
