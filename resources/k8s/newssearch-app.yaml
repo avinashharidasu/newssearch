@@ -17,13 +17,9 @@ spec:
           image: haridasuavinash/newssearch
           ports:
             - containerPort: 8080
-          env:
-            - name: SPRING_PROFILES_ACTIVE
-              value: dev
-            - name: SPRING_REDIS_HOST
-              value: redis
-            - name: SPRING_REDIS_PORT
-              value: "6379"
+          envFrom:
+            - configMapRef:
+                name: newssearch-app-config
           readinessProbe:
             httpGet:
               path: /actuator/health

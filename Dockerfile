@@ -1,7 +1,5 @@
 FROM azul/zulu-openjdk-alpine:21
 
-ARG DEPLOY_ENV
-
 WORKDIR /app
 
 ARG JAR_FILE=./build/libs/newssearch-0.0.1-SNAPSHOT.jar
@@ -9,4 +7,4 @@ COPY ${JAR_FILE} newssearch.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-Dspring.profiles.active=${DEPLOY_ENV}", "-jar", "newssearch.jar"]
+ENTRYPOINT ["java", "-jar", "newssearch.jar"]
