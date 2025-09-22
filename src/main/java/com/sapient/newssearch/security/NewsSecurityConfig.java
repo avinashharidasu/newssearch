@@ -27,10 +27,8 @@ public class NewsSecurityConfig {
                                 "/webjars/**",
                                 "/configuration/ui",
                                 "/configuration/security",
-                                "/actuator/**",
-                                "/unstable",
-                                "/v1/api/**").permitAll()
-                       // .anyExchange().authenticated()
+                                "/actuator/**").permitAll()
+                        .anyExchange().authenticated()
                 )
                 .httpBasic(Customizer.withDefaults())
                 .formLogin(Customizer.withDefaults());

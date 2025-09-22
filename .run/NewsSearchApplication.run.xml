@@ -1,0 +1,16 @@
+<component name="ProjectRunConfigurationManager">
+  <configuration default="false" name="NewsSearchApplication" type="Application" factoryName="Application" nameIsGenerated="true">
+    <option name="MAIN_CLASS_NAME" value="com.sapient.newssearch.NewsSearchApplication" />
+    <module name="newssearch.main" />
+    <option name="VM_PARAMETERS" value="-Dspring.profiles.active=dev -Dlogging.level.ROOT=DEBUG" />
+    <extension name="coverage">
+      <pattern>
+        <option name="PATTERN" value="com.sapient.newssearch.*" />
+        <option name="ENABLED" value="true" />
+      </pattern>
+    </extension>
+    <method v="2">
+      <option name="Make" enabled="true" />
+    </method>
+  </configuration>
+</component>
