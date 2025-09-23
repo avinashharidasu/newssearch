@@ -36,29 +36,6 @@ Profiles:
 - `application-test.properties` – test
 - `application-prod.properties` – production
 
-### Build
-```bash
-.\gradlew clean build
-```
-
-### Run locally
-Start Redis (via Docker Compose):
-```bash
-docker compose up -d
-```
-
-Run the app:
-```bash
-.\gradlew bootRun
-```
-
-Or run the built jar:
-```bash
-java -jar build/libs/newssearch-0.0.1-SNAPSHOT.jar
-```
-
-Default port: `8080`
-
 ### API
 - Base path: `/v1/api`
 - Search endpoint: `GET /v1/api/news/search`
@@ -97,7 +74,13 @@ docker compose up -d --build
 ```
 
 App will be available at `http://localhost:8080`.
+Swagger url: `http://localhost:8080/swagger-ui/index.html`
 
+### Build & Run (without cache)
+```bash
+.\gradlew clean build
+java -jar build/libs/newssearch-0.0.1-SNAPSHOT.jar
+```
 ### Kubernetes (optional)
 Manifests are under `resources/k8s`:
 - `newssearch-app.yaml` – deployment/service for the app
@@ -111,7 +94,7 @@ kubectl apply -f resources/k8s/newssearch-app.yaml
 ```
 
 ### CI/CD
-Sample Jenkins pipeline at `resources/jenkins/Jenkinsfile` covering build, test, and image steps.
+Sample Jenkins pipeline at `resources/jenkins/Jenkinsfile` covering build, test, image creation and publishing steps.
 
 ### Frontend (optional)
 The React app is under `resources/ui`. To run it:
@@ -121,4 +104,3 @@ npm install
 npm start
 ```
 It expects the backend at `http://localhost:8080`. You can override the base API via `REACT_APP_API_URL`.
-

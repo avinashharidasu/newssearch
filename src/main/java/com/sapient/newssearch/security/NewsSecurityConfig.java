@@ -2,14 +2,8 @@ package com.sapient.newssearch.security;
 
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.Profile;
-import org.springframework.security.config.Customizer;
 import org.springframework.security.config.annotation.web.reactive.EnableWebFluxSecurity;
 import org.springframework.security.config.web.server.ServerHttpSecurity;
-import org.springframework.security.core.userdetails.User;
-import org.springframework.security.core.userdetails.UserDetails;
-import org.springframework.security.core.userdetails.UserDetailsService;
-import org.springframework.security.provisioning.InMemoryUserDetailsManager;
 import org.springframework.security.web.server.SecurityWebFilterChain;
 
 @EnableWebFluxSecurity
@@ -19,8 +13,9 @@ public class NewsSecurityConfig {
     @Bean
     public SecurityWebFilterChain filterChain(ServerHttpSecurity http) throws Exception {
         http.authorizeExchange(authorize -> authorize
-                        .pathMatchers("/v2/api-docs",
-                                "/v3/api-docs",
+                        .pathMatchers(
+                                "/v2/api-docs",
+                                "/v3/api-docs/**",
                                 "/swagger-resources/**",
                                 "/swagger-ui.html",
                                 "/swagger-ui/**",
@@ -29,19 +24,12 @@ public class NewsSecurityConfig {
                                 "/configuration/security",
                                 "/actuator/**").permitAll()
                         .anyExchange().authenticated()
+
                 )
-                .httpBasic(Customizer.withDefaults())
-                .formLogin(Customizer.withDefaults());
-        //.oauth2Login(Customizer.withDefaults());
+                .oauth2ResourceServer(oauth2 -> oauth2
+                        .jwt(jwt -> jwt.jwkSetUri("https://www.googleapis.com/oauth2/v3/certs")) // Or use issuer-uri if configured
+                );
 
         return http.build();
     }
-
-    @Bean
-    @Profile("dev")
-    public UserDetailsService userDetailsService() {
-        UserDetails user = User.withUsername("admin").password("{noop}user").authorities("read").build();
-        return new InMemoryUserDetailsManager(user);
-    }
-
 }

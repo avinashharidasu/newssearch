@@ -15,7 +15,7 @@ public class NewsCacheKeyGenerator implements KeyGenerator {
     public Object generate(Object target, Method method, Object... params) {
 
         if (params[0] instanceof NewsSearchRequest request) {
-            log.info("Started to construct cache key {}", target.getClass().getSimpleName() + "_"
+            log.debug("Started to construct cache key {}", target.getClass().getSimpleName() + "_"
                     + method.getName() + "_"
                     + request.getQuery() + "_"
                     + request.getRangeFrom());

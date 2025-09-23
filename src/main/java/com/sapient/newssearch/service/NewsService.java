@@ -25,7 +25,7 @@ public class NewsService {
     @Retry(name = NEWS_RESULT_RETRY, fallbackMethod = "defaultNewsResults")
     @Cacheable(value = NEWS_RESULT_CACHE, keyGenerator = "newsCacheKeyGenerator")
     public Mono<NewsSearchResponseDto> getNewsResults(NewsSearchRequest request) {
-        log.info("News article search request initiated with {}", request);
+        log.debug("News article search request initiated with {}", request);
 
         var response = client.getNewsResults(request);
         return response.map(mapper::newsResponseToDto);
