@@ -30,6 +30,7 @@ public class NewsClient {
                 .queryParam(SORT_BY, request.getSortBy())
                 .queryParam(PAGE, request.getPage())
                 .queryParam(PAGE_SIZE, request.getPageSize())
+                .queryParam(LANGUAGE_KEY, LANGUAGE_VALUE)
                 .build();
     }
 
