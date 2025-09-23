@@ -7,4 +7,4 @@ COPY ${JAR_FILE} newssearch.jar
 
 EXPOSE 8080
 
-ENTRYPOINT ["java", "-jar", "newssearch.jar"]
+ENTRYPOINT ["java", "-jar", "-Dlogging.level.ROOT=DEBUG", "newssearch.jar"]

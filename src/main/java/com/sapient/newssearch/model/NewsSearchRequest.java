@@ -16,11 +16,11 @@ public class NewsSearchRequest {
     String query;
 
     @Size(min = 10, max = 19)
-    @Pattern(regexp = "^([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}[0-9]{2}[0-9]{2})$")
+    @Pattern(regexp = "^([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2})$")
     String rangeFrom;
 
     @Size(min = 10, max = 19)
-    @Pattern(regexp = "^([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}[0-9]{2}[0-9]{2})$")
+    @Pattern(regexp = "^([0-9]{4}-[0-9]{2}-[0-9]{2}|[0-9]{4}-[0-9]{2}-[0-9]{2}T[0-9]{2}:[0-9]{2}:[0-9]{2})$")
     String rangeTo;
 
     @Pattern(regexp = "^(relevancy|popularity|publishedAt)$", message = "Sort must be 'relevancy' or 'popularity' or 'publishedAt'")

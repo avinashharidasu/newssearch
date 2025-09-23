@@ -1,5 +1,15 @@
 services:
-  app:
+  app-ui:
+    build:
+      context: .
+      dockerfile: resources/ui/Dockerfile
+    container_name: newssearch-ui
+    ports:
+      - "8081:8081"
+    depends_on:
+      - app-api
+
+  app-api:
     build:
       context: .
       dockerfile: Dockerfile
@@ -7,13 +17,13 @@ services:
     ports:
       - "8080:8080"
     environment:
-      SPRING_REDIS_HOST: redis
+      SPRING_REDIS_HOST: app-cache
       SPRING_REDIS_PORT: 6379
       SPRING_PROFILES_ACTIVE: dev
     depends_on:
-      - redis
+      - app-cache
 
-  redis:
+  app-cache:
     image: redis:8.2.1-alpine
     container_name: newssearch-cache
     ports:
