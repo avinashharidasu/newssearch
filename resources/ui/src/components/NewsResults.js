@@ -60,7 +60,7 @@ const NewsResults = ({ results, currentPage, onPageChange }) => {
     <div className="results-section">
       <h2>Search Results</h2>
       <p>
-        Showing {results.articles.length} of {results.totalResults || 0} results
+        Showing {results.articles.length} of {results.totalArticles || 0} results
         {results.totalPages && ` (Page ${currentPage} of ${results.totalPages})`}
       </p>
 
