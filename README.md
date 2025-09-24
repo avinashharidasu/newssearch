@@ -6,17 +6,18 @@ This project exposes an API which is built on Reactive Spring Boot, that searche
 - Java 21, Gradle
 - Spring Boot WebFlux
 - Spring Data Redis Reactive (cache)
-- Resilience4j (circuit breaker/retry)
+- Resilience4j (Retry)
 - Actuator
 - springdoc-openapi for Swagger UI
 
 ### Project Structure
 - `src/main/java/com/sapient/newssearch` – application code
 - `src/test/java/com/sapient/newssearch` – tests
-- `resources/ui` – optional React frontend
+- `resources/ui` – React frontend
 - `resources/k8s` – Kubernetes manifests
-- `resources/jenkins/Jenkinsfile` – CI pipeline example
-- `Dockerfile`, `compose.yaml` – for local testing
+- `resources/jenkins/Jenkinsfile` – CI pipeline for Backend
+- `resources/jenkins/Jenkinsfile` – CI pipeline for UI
+- `compose.yaml` – for local testing
 
 ### Prerequisites
 - JDK 21+
@@ -25,16 +26,16 @@ This project exposes an API which is built on Reactive Spring Boot, that searche
 
 ### Configuration Properties
 Property files are present are under `src/main/resources`.
-- Active profile defaults to `dev` in `application.properties`.
-- Redis: `spring.data.redis.host`, `spring.data.redis.port` (defaults set for docker-compose: host `redis`, port `6379`).
+- Active profile defaults to `dev`
+- Redis: `spring.data.redis.host`, `spring.data.redis.port` (defaults set for docker-compose: host `newssearch-cache`, port `6379`).
 - External News API:
   - `news.service.search.url`
   - `news.service.search.api-key`
 
 Profiles:
 - `application-dev.properties` – for local development only
-- `application-test.properties` – test
-- `application-prod.properties` – production
+- `application-test.properties` – Test
+- `application-prod.properties` – Production
 
 ### API
 - Base path: `/v1/api`
@@ -55,26 +56,22 @@ GET http://localhost:8080/v1/api/news/search?query=bitcoin&sortBy=publishedAt&pa
 
 OpenAPI/Swagger UI (for local testing):
 ```
-http://localhost:8080/swagger-ui.html
+http://localhost:8080/swagger-ui/index.html
 ```
 
 Actuator (for heartbeat/health info):
 ```
-http://localhost:8080/actuator
-```
-### Docker
-Build image:
-```bash
-docker build -t newssearch:local .
+http://localhost:8080/actuator/health
 ```
 
-Run with Docker Compose (API + Cache):
+Run with Docker Compose (API + Cache + UI):
 ```bash
 docker compose up -d --build
 ```
 
-App will be available at `http://localhost:8080`.
-Swagger url: `http://localhost:8080/swagger-ui/index.html`
+- API will be available at `http://localhost:8080`, with Swagger url: `http://localhost:8080/swagger-ui/index.html`
+- UI will be available at `http://localhost:8081`.
+
 
 ### Build & Run (without cache)
 ```bash
@@ -85,22 +82,24 @@ java -jar build/libs/newssearch-0.0.1-SNAPSHOT.jar
 Manifests are under `resources/k8s`:
 - `newssearch-app.yaml` – deployment/service for the app
 - `newssearch-cache.yaml` – Redis
+- `newssearch-ui.yaml` – React UI
 - `kubeconfig.yaml` – example kubeconfig placeholder
 
 Apply (example):
 ```bash
 kubectl apply -f resources/k8s/newssearch-cache.yaml
 kubectl apply -f resources/k8s/newssearch-app.yaml
+kubectl apply -f resources/k8s/newssearch-ui.yaml
 ```
 
 ### CI/CD
-Sample Jenkins pipeline at `resources/jenkins/Jenkinsfile` covering build, test, image creation and publishing steps.
+- Sample API Jenkins pipeline at `resources/jenkins/Jenkinsfile` covering build, test, image creation and publishing steps.
+- Sample UI Jenkins pipeline at `resources/jenkins/JenkinsfileUI` covering build, test, image creation and publishing steps.
 
-### Frontend (optional)
+### Frontend
 The React app is under `resources/ui`. To run it:
 ```bash
 cd resources/ui
 npm install
 npm start
 ```
-It expects the backend at `http://localhost:8080`. You can override the base API via `REACT_APP_API_URL`.
