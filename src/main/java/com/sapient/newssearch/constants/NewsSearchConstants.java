@@ -16,6 +16,8 @@ public final class NewsSearchConstants {
     public static final String NEWS_RESULT_RETRY = "newsSearchRetryPolicy";
     public static final String NEWS_RESULT_CACHE = "newssearchcache";
 
+    public static final String NO_RESULTS_FOUND = "No results found";
+
     private NewsSearchConstants() {
     }
 

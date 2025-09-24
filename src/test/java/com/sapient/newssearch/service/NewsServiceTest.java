@@ -56,7 +56,7 @@ class NewsServiceTest {
         var request = new NewsSearchRequest();
         var result = service.defaultNewsResults(request, new RuntimeException("Response from fallback")).block();
         assertNotNull(result);
-        assertEquals("fallback", result.getStatus());
+        assertEquals("No results found", result.getStatus());
         assertEquals(0, result.getTotalArticles());
     }
 }

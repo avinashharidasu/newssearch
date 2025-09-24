@@ -8,12 +8,10 @@ import io.github.resilience4j.retry.annotation.Retry;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
-import static com.sapient.newssearch.constants.NewsSearchConstants.NEWS_RESULT_CACHE;
-import static com.sapient.newssearch.constants.NewsSearchConstants.NEWS_RESULT_RETRY;
+import static com.sapient.newssearch.constants.NewsSearchConstants.*;
 
 @Service
 @Slf4j
@@ -22,7 +20,6 @@ public class NewsService {
 
     private final NewsClient client;
     private final NewsSearchResponseMapper mapper;
-    private final ReactiveRedisTemplate<String, Object> template;
 
     @Retry(name = NEWS_RESULT_RETRY, fallbackMethod = "defaultNewsResults")
     @Cacheable(value = NEWS_RESULT_CACHE, keyGenerator = "newsCacheKeyGenerator")
@@ -37,7 +34,7 @@ public class NewsService {
         log.error("Retry policy newsSearchRetryPolicy triggered due to exception {}", ex.getMessage());
 
         var fallback = new NewsSearchResponseDto();
-        fallback.setStatus("No results found");
+        fallback.setStatus(NO_RESULTS_FOUND);
         fallback.setTotalArticles(0);
         fallback.setArticles(java.util.Collections.emptyList());
         return Mono.just(fallback);
