@@ -6,15 +6,15 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: newssearch
+      app: newssearch-app
   template:
     metadata:
       labels:
-        app: newssearch
+        app: newssearch-app
     spec:
       containers:
-        - name: newssearch
-          image: haridasuavinash/newssearch
+        - name: newssearch-app
+          image: haridasuavinash/newssearch-app
           ports:
             - containerPort: 8080
           env:
@@ -45,10 +45,9 @@ kind: Service
 metadata:
   name: newssearch-app
 spec:
-  type: NodePort
+  type: ClusterIP
   selector:
-    app: newssearch
+    app: newssearch-app
   ports:
     - port: 8080
       targetPort: 8080
-      nodePort: 30009

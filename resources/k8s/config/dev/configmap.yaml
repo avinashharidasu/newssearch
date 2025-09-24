@@ -4,5 +4,5 @@ metadata:
   name: newssearch-app-config
 data:
   SPRING_PROFILES_ACTIVE: dev
-  SPRING_REDIS_HOST: redis
+  SPRING_REDIS_HOST: newssearch-cache
   SPRING_REDIS_PORT: "6379"

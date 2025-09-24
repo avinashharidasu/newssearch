@@ -1,30 +1,30 @@
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
-  name: redis-data
+  name: newssearch-cache
 spec:
   accessModes:
     - ReadWriteOnce
   resources:
     requests:
-      storage: 1Gi
+      storage: 5Gi
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: redis
+  name: newssearch-cache
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: redis
+      app: newssearch-cache
   template:
     metadata:
       labels:
-        app: redis
+        app: newssearch-cache
     spec:
       containers:
-        - name: redis
+        - name: newssearch-cache
           image: redis:8.2.1-alpine
           command: [ "redis-server","--appendonly","yes" ]
           ports:
@@ -40,11 +40,11 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: redis
+  name: newssearch-cache
 spec:
   type: ClusterIP
   selector:
-    app: redis
+    app: newssearch-cache
   ports:
     - port: 6379
       targetPort: 6379

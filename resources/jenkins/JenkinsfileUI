@@ -24,16 +24,10 @@ pipeline {
       }
     }
 
-    stage('Build JAR') {
-      steps {
-        bat '.\\gradlew clean build --no-daemon'
-      }
-    }
-
     stage('Build Docker Image') {
       steps {
         script {
-          docker.build("${IMAGE_NAME}:latest", '-f Dockerfile .')
+          docker.build("${IMAGE_NAME}:latest", '-f resources/ui/Dockerfile .')
           bat "docker build -t ${IMAGE_NAME}:${env.BUILD_NUMBER} --build-arg DEPLOY_ENV=${env.DEPLOY_ENV} ."
         }
       }
@@ -56,8 +50,8 @@ pipeline {
           bat """
             minikube kubectl -- apply -n ${K8S_NAMESPACE} -f resources/k8s/config/${K8S_NAMESPACE}/
             minikube kubectl -- apply -n ${K8S_NAMESPACE} -f resources/k8s/
-            minikube kubectl -- set image deployment/newssearch-app newssearch-app=${IMAGE_NAME}:${env.BUILD_NUMBER} -n ${K8S_NAMESPACE}
-            minikube kubectl -- rollout status deployment/newssearch-app -n ${K8S_NAMESPACE}
+            minikube kubectl -- set image deployment/newssearch-ui newssearch-ui=${IMAGE_NAME}:${env.BUILD_NUMBER} -n ${K8S_NAMESPACE}
+            minikube kubectl -- rollout status deployment/newssearch-ui -n ${K8S_NAMESPACE}
           """
         }
       }
