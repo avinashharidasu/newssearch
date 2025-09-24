@@ -19,14 +19,17 @@ public class NewsCacheKeyGenerator implements KeyGenerator {
                     + method.getName() + "_"
                     + request.getQuery() + "_"
                     + request.getRangeFrom());
-            return target.getClass().getSimpleName() + "_"
-                    + method.getName() + "_"
-                    + request.getQuery() + "_"
-                    + request.getRangeFrom();
+
+            return "%s_%s_%s_%s".formatted(target.getClass().getSimpleName(),
+                            method.getName(),
+                            request.getQuery(),
+                            request.getRangeFrom())
+                    .toUpperCase();
         }
 
-        return target.getClass().getSimpleName() + "_"
-                + method.getName() + "_"
-                + StringUtils.arrayToDelimitedString(params, "_");
+        return "%s_%s_%s".formatted(target.getClass().getSimpleName(),
+                        method.getName(),
+                        StringUtils.arrayToDelimitedString(params, "_"))
+                .toUpperCase();
     }
 }

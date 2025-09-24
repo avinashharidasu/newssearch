@@ -5,9 +5,11 @@ import com.sapient.newssearch.dto.NewsSearchResponseDto;
 import com.sapient.newssearch.mapper.NewsSearchResponseMapper;
 import com.sapient.newssearch.model.NewsSearchRequest;
 import io.github.resilience4j.retry.annotation.Retry;
+import io.micrometer.common.util.StringUtils;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cache.annotation.Cacheable;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
@@ -20,6 +22,15 @@ public class NewsService {
 
     private final NewsClient client;
     private final NewsSearchResponseMapper mapper;
+    private final ReactiveRedisTemplate<String, NewsSearchResponseDto> template;
+
+    private Mono<NewsSearchResponseDto> fallbackSearchResults() {
+        var fallback = new NewsSearchResponseDto();
+        fallback.setStatus(NO_RESULTS_FOUND);
+        fallback.setTotalArticles(0);
+        fallback.setArticles(java.util.Collections.emptyList());
+        return Mono.just(fallback);
+    }
 
     @Retry(name = NEWS_RESULT_RETRY, fallbackMethod = "defaultNewsResults")
     @Cacheable(value = NEWS_RESULT_CACHE, keyGenerator = "newsCacheKeyGenerator")
@@ -33,10 +44,19 @@ public class NewsService {
     public Mono<NewsSearchResponseDto> defaultNewsResults(NewsSearchRequest request, Exception ex) {
         log.error("Retry policy newsSearchRetryPolicy triggered due to exception {}", ex.getMessage());
 
-        var fallback = new NewsSearchResponseDto();
-        fallback.setStatus(NO_RESULTS_FOUND);
-        fallback.setTotalArticles(0);
-        fallback.setArticles(java.util.Collections.emptyList());
-        return Mono.just(fallback);
+        var keys = template.keys(KEYS_PATTERN.formatted(request.getQuery()).toUpperCase());
+
+        if (keys == null)
+            return fallbackSearchResults();
+
+        var firstKey = keys.toStream().findFirst().orElse("");
+
+        if (StringUtils.isEmpty(firstKey))
+            return fallbackSearchResults();
+
+        return template.opsForValue()
+                .get(firstKey)
+                .doOnNext(mapper::newsResponseToDto)
+                .switchIfEmpty(Mono.defer(this::fallbackSearchResults));
     }
 }

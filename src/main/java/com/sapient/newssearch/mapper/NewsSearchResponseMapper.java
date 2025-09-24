@@ -8,5 +8,7 @@ import org.springframework.stereotype.Component;
 public interface NewsSearchResponseMapper {
     NewsSearchResponseDto newsResponseToDto(NewsSearchResponse source);
 
+    NewsSearchResponseDto newsResponseToDto(Object source);
+
     NewsSearchResponse dtoToNewsResponse(NewsSearchResponseDto destination);
 }

@@ -19,6 +19,15 @@ public class NewsSearchResponseMapperImpl implements NewsSearchResponseMapper {
     }
 
     @Override
+    public NewsSearchResponseDto newsResponseToDto(Object source) {
+        if (source instanceof NewsSearchResponse response) {
+            return newsResponseToDto(response);
+        } else {
+            return null;
+        }
+    }
+
+    @Override
     public NewsSearchResponse dtoToNewsResponse(NewsSearchResponseDto destination) {
         final var response = new NewsSearchResponse();
         response.setStatus(destination.getStatus());

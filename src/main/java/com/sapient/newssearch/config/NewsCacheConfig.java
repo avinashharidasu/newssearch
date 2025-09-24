@@ -1,12 +1,13 @@
 package com.sapient.newssearch.config;
 
+import com.sapient.newssearch.dto.NewsSearchResponseDto;
 import org.springframework.boot.autoconfigure.cache.RedisCacheManagerBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.data.redis.cache.RedisCacheConfiguration;
 import org.springframework.data.redis.connection.ReactiveRedisConnectionFactory;
 import org.springframework.data.redis.core.ReactiveRedisTemplate;
-import org.springframework.data.redis.serializer.GenericJackson2JsonRedisSerializer;
+import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.RedisSerializationContext;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
@@ -18,12 +19,14 @@ import static com.sapient.newssearch.constants.NewsSearchConstants.NEWS_RESULT_C
 @Configuration
 public class NewsCacheConfig {
     @Bean
-    public ReactiveRedisTemplate<String, Object> reactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory) {
+    public ReactiveRedisTemplate<String, NewsSearchResponseDto> reactiveRedisTemplate(ReactiveRedisConnectionFactory connectionFactory) {
         StringRedisSerializer keySerializer = new StringRedisSerializer();
-        GenericJackson2JsonRedisSerializer valueSerializer = new GenericJackson2JsonRedisSerializer();
+
+        RedisSerializer<NewsSearchResponseDto> valueSerializer = new Jackson2JsonRedisSerializer<>(NewsSearchResponseDto.class);
+
 
         return new ReactiveRedisTemplate<>(connectionFactory,
-                RedisSerializationContext.<String, Object>newSerializationContext()
+                RedisSerializationContext.<String, NewsSearchResponseDto>newSerializationContext()
                         .key(keySerializer)
                         .value(valueSerializer)
                         .hashKey(keySerializer)

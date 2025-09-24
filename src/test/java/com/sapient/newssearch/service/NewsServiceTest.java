@@ -7,6 +7,7 @@ import com.sapient.newssearch.model.NewsSearchRequest;
 import com.sapient.newssearch.model.NewsSearchResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.data.redis.core.ReactiveRedisTemplate;
 import reactor.core.publisher.Mono;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -18,12 +19,14 @@ class NewsServiceTest {
     private NewsClient client;
     private NewsSearchResponseMapper mapper;
     private NewsService service;
+    private ReactiveRedisTemplate<String, NewsSearchResponseDto> template;
 
     @BeforeEach
     void setUp() {
         client = mock(NewsClient.class);
         mapper = mock(NewsSearchResponseMapper.class);
-        service = new NewsService(client, mapper);
+        template = mock(ReactiveRedisTemplate.class);
+        service = new NewsService(client, mapper, template);
     }
 
     @Test
