@@ -79,6 +79,7 @@ const NewsSearchForm = ({ onSearch }) => {
             name="rangeFrom"
             value={formData.rangeFrom}
             onChange={handleInputChange}
+            required
           />
         </div>
 
@@ -90,6 +91,7 @@ const NewsSearchForm = ({ onSearch }) => {
             name="rangeTo"
             value={formData.rangeTo}
             onChange={handleInputChange}
+            required
           />
         </div>
       </div>
