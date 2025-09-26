@@ -70,7 +70,7 @@ docker compose up -d --build
 ```
 
 - API will be available at `http://localhost:8080`, with Swagger url: `http://localhost:8080/swagger-ui/index.html`
-- UI will be available at `http://localhost:8081`.
+- UI will be available at `http://localhost:8081`. [Once the page loads please refresh it once due to a bug]
 
 
 ### Build & Run (without cache)
