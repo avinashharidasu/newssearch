@@ -1,4 +1,4 @@
-## NewsSearch Backend Application
+## NewsSearch Application
 
 This project exposes an API which is built on Reactive Spring Boot, that searches news via an upstream API, caches results in Redis.
 
@@ -9,6 +9,7 @@ This project exposes an API which is built on Reactive Spring Boot, that searche
 - Resilience4j (Retry)
 - Actuator
 - springdoc-openapi for Swagger UI
+- React
 
 ### Project Structure
 - `src/main/java/com/sapient/newssearch` – application code
