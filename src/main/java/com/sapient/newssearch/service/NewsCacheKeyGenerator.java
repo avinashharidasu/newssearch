@@ -18,12 +18,17 @@ public class NewsCacheKeyGenerator implements KeyGenerator {
             log.debug("Started to construct cache key {}", target.getClass().getSimpleName() + "_"
                     + method.getName() + "_"
                     + request.getQuery() + "_"
-                    + request.getRangeFrom());
+                    + request.getRangeFrom() + "_"
+                    + request.getRangeTo() + "_"
+                    + request.getPage()
+            );
 
-            return "%s_%s_%s_%s".formatted(target.getClass().getSimpleName(),
+            return "%s_%s_%s_%s_%s_%s".formatted(target.getClass().getSimpleName(),
                             method.getName(),
                             request.getQuery(),
-                            request.getRangeFrom())
+                            request.getRangeFrom(),
+                            request.getRangeTo(),
+                            request.getPage())
                     .toUpperCase();
         }
 
