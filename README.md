@@ -17,7 +17,7 @@ This project exposes an API which is built on Reactive Spring Boot, that searche
 - `resources/ui` – React frontend
 - `resources/k8s` – Kubernetes manifests
 - `resources/jenkins/Jenkinsfile` – CI pipeline for Backend
-- `resources/jenkins/Jenkinsfile` – CI pipeline for UI
+- `resources/jenkins/JenkinsfileUI` – CI pipeline for UI
 - `compose.yaml` – for local testing
 
 ### Prerequisites
