@@ -78,7 +78,7 @@ docker compose up -d --build
 .\gradlew clean build
 java -jar build/libs/newssearch-0.0.1-SNAPSHOT.jar
 ```
-### Kubernetes (optional)
+### Kubernetes (minikube - optional)
 Manifests are under `resources/k8s`:
 - `newssearch-app.yaml` – deployment/service for the app
 - `newssearch-cache.yaml` – Redis

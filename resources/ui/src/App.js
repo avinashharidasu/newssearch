@@ -13,6 +13,7 @@ function App() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [currentPage, setCurrentPage] = useState(1);
+  const [pageSize, setPageSize] = useState(10);
   const [lastSearchParams, setLastSearchParams] = useState(null);
 
   // No gapi init; using Google Identity Services via AuthButton
@@ -33,6 +34,7 @@ function App() {
     setIsAuthenticated(false);
     setSearchResults(null);
     setCurrentPage(1);
+    setPageSize(10);
   };
 
   const handleSearch = async (searchParams) => {
@@ -52,7 +54,7 @@ function App() {
         rangeFrom: String(searchParams.rangeFrom).concat(":00"),
         rangeTo: String(searchParams.rangeTo).concat(":00"),
         sortBy: searchParams.sortBy,
-        pageSize: '10',
+        pageSize: pageSize.toString(),
         page: '1'
       });
 
@@ -89,11 +91,11 @@ function App() {
 
     try {
       const queryParams = new URLSearchParams({
-        searchquery: paramsToUse.query,
-        rangeFrom: paramsToUse.rangeFrom,
-        rangeTo: paramsToUse.rangeTo,
+        query: paramsToUse.query,
+        rangeFrom: String(paramsToUse.rangeFrom).concat(":00"),
+        rangeTo: String(paramsToUse.rangeTo).concat(":00"),
         sortBy: paramsToUse.sortBy,
-        pageSize: '10',
+        pageSize: pageSize.toString(),
         page: page.toString()
       });
 
@@ -112,6 +114,44 @@ function App() {
       setSearchResults({ ...data, searchParams: paramsToUse });
     } catch (err) {
       setError('Page load failed: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handlePageSizeChange = async (newPageSize) => {
+    if (!isAuthenticated || !lastSearchParams) return;
+    
+    setPageSize(newPageSize);
+    setCurrentPage(1);
+    setLoading(true);
+    setError(null);
+
+    try {
+      const queryParams = new URLSearchParams({
+        query: lastSearchParams.query,
+        rangeFrom: String(lastSearchParams.rangeFrom).concat(":00"),
+        rangeTo: String(lastSearchParams.rangeTo).concat(":00"),
+        sortBy: lastSearchParams.sortBy,
+        pageSize: newPageSize.toString(),
+        page: '1'
+      });
+
+      const response = await fetch(`${API_BASE_URL}?${queryParams}`, {
+        headers: {
+          'Authorization': `Bearer ${accessToken}`,
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const data = await response.json();
+      setSearchResults({ ...data, searchParams: lastSearchParams });
+    } catch (err) {
+      setError('Page size change failed: ' + err.message);
     } finally {
       setLoading(false);
     }
@@ -142,7 +182,9 @@ function App() {
             <NewsResults
               results={searchResults}
               currentPage={currentPage}
+              pageSize={pageSize}
               onPageChange={(page) => handlePageChange(page, searchResults.searchParams)}
+              onPageSizeChange={handlePageSizeChange}
             />
           )}
         </>

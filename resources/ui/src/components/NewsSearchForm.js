@@ -72,7 +72,7 @@ const NewsSearchForm = ({ onSearch }) => {
 
       <div className="form-row">
         <div className="form-group">
-          <label htmlFor="rangeFrom">From Date/Time</label>
+          <label htmlFor="rangeFrom">From Date/Time *</label>
           <input
             type="datetime-local"
             id="rangeFrom"
@@ -84,7 +84,7 @@ const NewsSearchForm = ({ onSearch }) => {
         </div>
 
         <div className="form-group">
-          <label htmlFor="rangeTo">To Date/Time</label>
+          <label htmlFor="rangeTo">To Date/Time *</label>
           <input
             type="datetime-local"
             id="rangeTo"
